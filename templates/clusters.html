@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Content Clusters{% endblock %}
+{% block content %}
+  <h1>Content clusters</h1>
+  <p class="subtitle">Titles grouped by genre, release year, and duration using K-Means clustering.</p>
+
+  {% if not plot_ready %}
+    <div class="panel panel-warning">
+      Cluster plot not found. Run <code>python -m src.tasks.task4_segmentation</code> first.
+    </div>
+  {% else %}
+    <img class="cluster-plot" src="{{ url_for('cluster_plot_image') }}" alt="Cluster visualization (PCA-reduced)">
+  {% endif %}
+
+  {% if not results_ready %}
+    <div class="panel panel-warning">
+      Cluster assignment table not saved yet. Add this to <code>task4_segmentation.py</code>:<br>
+      <code>df[['title', 'cluster']].to_csv('artifacts/cluster_results.csv', index=False)</code>
+    </div>
+  {% else %}
+    <div class="panel">
+      <h2>Cluster assignments (first 20)</h2>
+      <table>
+        <tr>
+          {% for key in cluster_rows[0].keys() %}<th>{{ key }}</th>{% endfor %}
+        </tr>
+        {% for row in cluster_rows %}
+          <tr>
+            {% for value in row.values() %}<td>{{ value }}</td>{% endfor %}
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+{% endblock %}

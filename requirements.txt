@@ -3,7 +3,5 @@ numpy
 scikit-learn
 matplotlib
 seaborn
-python-dotenv
 Flask
-dill
-mlflow==2.2.2
+joblib

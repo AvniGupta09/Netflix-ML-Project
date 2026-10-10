@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Success Analytics{% endblock %}
+{% block content %}
+  <h1>Success analytics</h1>
+  <p class="subtitle">Model comparison and automated insights generated from content patterns.</p>
+
+  {% if not comparison_ready %}
+    <div class="panel panel-warning">
+      Model comparison not found. Run <code>python -m src.tasks.task6_success_analytics</code> first.
+    </div>
+  {% else %}
+    <div class="panel">
+      <h2>Model comparison</h2>
+      <table>
+        <tr>
+          {% for key in comparison_rows[0].keys() %}<th>{{ key }}</th>{% endfor %}
+        </tr>
+        {% for row in comparison_rows %}
+          <tr>
+            {% for value in row.values() %}<td>{{ value }}</td>{% endfor %}
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+
+  <h2 class="section-heading">Visual report</h2>
+  {% if charts %}
+    <div class="chart-grid">
+      {% for c in charts %}
+        <figure class="chart-card">
+          <img class="chart" src="{{ url_for('static', filename='task6/' ~ c.file) }}" alt="{{ c.title }}" loading="lazy">
+          <figcaption>
+            <strong>{{ c.title }}</strong>
+            <span>{{ c.caption }}</span>
+          </figcaption>
+        </figure>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="panel panel-warning">
+      Charts not found. Restart the app to generate them, or check <code>logs/</code> if the Task 6 build failed.
+    </div>
+  {% endif %}
+
+  {% if not insights_ready %}
+    <div class="panel panel-warning">
+      Insights file not saved yet. Add this in <code>task6_success_analytics.py</code>'s <code>generate_insights()</code>:<br>
+      <code>open('artifacts/insights_task6.txt', 'w').write('\n'.join(insights))</code>
+    </div>
+  {% else %}
+    <div class="panel">
+      <h2>Automated insights</h2>
+      <ul class="insights-list">
+        {% for i in insights %}<li>{{ i }}</li>{% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endblock %}

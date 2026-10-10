@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project: generated files (rebuilt automatically by app.py)
+logs/
+artifacts/models/
+artifacts/*.csv
+artifacts/*.txt
+static/task6/

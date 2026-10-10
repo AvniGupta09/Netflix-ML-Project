@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Netflix ML Suite{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">Content<span>ML</span></div>
+      <nav>
+        <a class="nav-link {% if active == 'recommendations' %}active{% endif %}" href="/recommendations">Recommendations</a>
+        <a class="nav-link {% if active == 'ratings' %}active{% endif %}" href="/ratings">Rating prediction</a>
+        <a class="nav-link {% if active == 'clusters' %}active{% endif %}" href="/clusters">Content clusters</a>
+        <a class="nav-link {% if active == 'analytics' %}active{% endif %}" href="/analytics">Success analytics</a>
+      </nav>
+    </aside>
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

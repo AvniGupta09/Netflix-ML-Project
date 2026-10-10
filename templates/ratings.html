@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Rating Prediction{% endblock %}
+{% block content %}
+  <h1>Predict content rating</h1>
+  <p class="subtitle">Enter content attributes to predict the likely audience rating category.</p>
+
+  {% if not model_ready %}
+    <div class="panel panel-warning">
+      Model not built yet. Run <code>python -m src.tasks.task3_rating_classification</code> first.
+    </div>
+  {% else %}
+    <div class="panel">
+      <form method="POST">
+        <div class="form-row">
+          <div>
+            <label for="type">Type</label>
+            <select name="type" id="type">
+              <option value="Movie" {% if form_values.get('type') == 'Movie' %}selected{% endif %}>Movie</option>
+              <option value="TV Show" {% if form_values.get('type') == 'TV Show' %}selected{% endif %}>TV Show</option>
+            </select>
+          </div>
+          <div>
+            <label for="duration_num">Duration (minutes or seasons)</label>
+            <input type="number" name="duration_num" id="duration_num" value="{{ form_values.get('duration_num', 90) }}" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="release_year">Release year</label>
+            <input type="number" name="release_year" id="release_year" value="{{ form_values.get('release_year', 2020) }}" required>
+          </div>
+          <div>
+            <label for="country">Primary country</label>
+            <input type="text" name="country" id="country" value="{{ form_values.get('country', 'United States') }}" required>
+          </div>
+        </div>
+        <button type="submit">Predict rating</button>
+      </form>
+    </div>
+
+    {% if error %}
+      <div class="panel panel-warning">{{ error }}</div>
+    {% endif %}
+
+    {% if prediction %}
+      <div class="result-card">
+        <div class="label">Predicted rating</div>
+        <div class="value">{{ prediction }}</div>
+      </div>
+    {% endif %}
+
+    {% if history %}
+      <div class="panel">
+        <h2>Model comparison history</h2>
+        <table>
+          <tr><th>Timestamp</th><th>Model</th><th>Accuracy</th><th>F1 macro</th></tr>
+          {% for row in history %}
+            <tr>
+              <td>{{ row.timestamp }}</td>
+              <td>{{ row.model }}</td>
+              <td>{{ '%.3f' % row.accuracy }}</td>
+              <td>{{ '%.3f' % row.f1_macro }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endblock %}

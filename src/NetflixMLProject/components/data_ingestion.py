@@ -12,7 +12,7 @@ from dataclasses import dataclass
 class DataIngestionConfig:
     train_data_path:str=os.path.join("artifacts","train.csv")
     test_data_path:str=os.path.join("artifacts","test.csv")
-    raw_data_path:str=os.path.join("artifacts","dataset.csv")
+    raw_data_path:str=os.path.join("artifacts","Dataset.csv")
 
 class DataIngestion:
     def __init__(self):
@@ -20,7 +20,7 @@ class DataIngestion:
     
     def initiate_data_ingestion(self):
         try:  
-            df=pd.read_csv(os.path.join('notebook/data','dataset.csv'))
+            df=pd.read_csv(os.path.join('notebook/data','Dataset.csv'))
             logging.info("Reading complete database.")
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
